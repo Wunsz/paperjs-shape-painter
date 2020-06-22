@@ -1,6 +1,1 @@
-/**
- * @class ExampleComponent
- */
-const testValue = 0;
-
-export default testValue;
+export {default as Painter} from './Painter';
