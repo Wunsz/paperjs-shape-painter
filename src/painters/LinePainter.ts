@@ -7,15 +7,8 @@ class LinePainter extends ShapePainter {
 
     begin(scope: paper.PaperScope) {
         this.path = new scope.Path();
-        this.tool = new scope.Tool();
-        this.active = true;
 
-        this.tool.onMouseDown = this.onMouseDown;
-        this.tool.onMouseMove = this.onMouseMove;
-        this.tool.onMouseUp = this.onMouseUp;
-        this.tool.onKeyUp = this.onKeyUp;
-
-        this.tool.activate();
+        this.activate(scope);
 
         this.path.strokeColor = new scope.Color('black');
         this.path.selected = true;
@@ -23,6 +16,11 @@ class LinePainter extends ShapePainter {
 
     stop() {
         if (this.path === undefined) return;
+
+        this.path.onDoubleClick = (event: MouseEvent) => {
+            // @ts-ignore
+            event.target.selected = true;
+        };
 
         this.path.selected = false;
         this.path = undefined;

@@ -10,6 +10,20 @@ abstract class ShapePainter {
     public abstract onMouseDown(event: paper.MouseEvent): void;
     public abstract onMouseMove(event: paper.MouseEvent): void;
     public abstract onMouseUp(event: paper.MouseEvent): void;
+    public abstract onKeyUp(event: paper.KeyEvent): void;
+
+    protected activate(scope: paper.PaperScope) {
+        this.tool = new scope.Tool();
+
+        this.tool.onMouseDown = this.onMouseDown;
+        this.tool.onMouseMove = this.onMouseMove;
+        this.tool.onMouseUp = this.onMouseUp;
+        this.tool.onKeyUp = this.onKeyUp;
+
+        this.active = true;
+
+        this.tool.activate();
+    }
 }
 
 export default ShapePainter;
