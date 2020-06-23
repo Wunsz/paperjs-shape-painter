@@ -1,33 +1,45 @@
 import 'paper';
-import ShapePainter from "./painters/ShapePainter";
-import LinePainter from "./painters/LinePainter";
 import HitScanner from "./helper/HitScanner";
+import LineTool from "./tools/LineTool";
+import RectangleTool from "./tools/RectangleTool";
+import BaseTool from "./tools/BaseTool";
+import EllipseTool from "./tools/EllipseTool";
+import CircleTool from "./tools/CircleTool";
+
+export type Tools = 'Line' | 'Rectangle' | 'Ellipse' | 'Circle'
 
 class Painter {
     scope: paper.PaperScope;
-    shapePainter: ShapePainter | undefined;
+    activeTool: BaseTool | undefined;
     hitScanner: HitScanner;
+    tools: Record<Tools, BaseTool> = {
+        Line: new LineTool(),
+        Rectangle: new RectangleTool(),
+        Ellipse: new EllipseTool(),
+        Circle: new CircleTool(),
+    };
 
     constructor(scope: paper.PaperScope) {
         this.scope = scope;
         this.hitScanner = new HitScanner(scope);
+
         this.init();
     }
 
     public init() {
-        this.scope.settings.hitTolerance = 10;
-        this.hitScanner.enable();
+        //this.scope.settings.hitTolerance = 10;
+        //this.hitScanner.enable();
     }
 
-    public startPainting() {
-        this.shapePainter = new LinePainter();
-        this.shapePainter.begin(this.scope);
+    public selectTool(tool: Tools) {
+        this.activeTool = this.tools[tool];
+        this.activeTool.activate(this.scope);
     }
 
     public cancelCurrentPainting() {
-        if (this.shapePainter !== undefined) {
-            this.shapePainter.cancel();
-            this.shapePainter = undefined;
+        if (this.activeTool !== undefined) {
+            this.activeTool.deactivate();
+            this.activeTool = undefined;
         }
     }
 }
