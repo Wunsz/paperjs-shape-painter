@@ -36,6 +36,7 @@ export default class App extends Component {
                     <button onClick={() => this.painter.selectTool('Rectangle')}>Draw rect</button>
                     <button onClick={() => this.painter.selectTool('Ellipse')}>Draw ellipse</button>
                     <button onClick={() => this.painter.selectTool('Circle')}>Draw circle</button>
+                    <button onClick={() => this.painter.selectTool('Polygon')}>Draw polygon</button>
                 </div>
             </div>
 

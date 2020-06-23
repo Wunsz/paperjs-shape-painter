@@ -1,7 +1,7 @@
 import 'paper';
 import BaseTool from "./BaseTool";
 
-class LineTool extends BaseTool {
+class RectangleTool extends BaseTool {
     path: paper.Path | undefined;
     initialPoint: paper.Point;
 
@@ -38,4 +38,4 @@ class LineTool extends BaseTool {
     }
 }
 
-export default LineTool;
+export default RectangleTool;

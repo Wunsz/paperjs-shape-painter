@@ -5,6 +5,8 @@ class LineTool extends BaseTool {
     path: paper.Path | undefined;
 
     onMouseDown = (event: paper.MouseEvent) => {
+        if (this.path !== undefined) return;
+
         this.path = new this.scope.Path();
         this.path.selected = true;
         this.path.strokeColor = new this.scope.Color('black');

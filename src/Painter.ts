@@ -5,8 +5,9 @@ import RectangleTool from "./tools/RectangleTool";
 import BaseTool from "./tools/BaseTool";
 import EllipseTool from "./tools/EllipseTool";
 import CircleTool from "./tools/CircleTool";
+import PolygonTool from "./tools/PolygonTool";
 
-export type Tools = 'Line' | 'Rectangle' | 'Ellipse' | 'Circle'
+export type Tools = 'Line' | 'Rectangle' | 'Ellipse' | 'Circle' | 'Polygon'
 
 class Painter {
     scope: paper.PaperScope;
@@ -17,6 +18,7 @@ class Painter {
         Rectangle: new RectangleTool(),
         Ellipse: new EllipseTool(),
         Circle: new CircleTool(),
+        Polygon: new PolygonTool(),
     };
 
     constructor(scope: paper.PaperScope) {
