@@ -32,11 +32,12 @@ export default class App extends Component {
                 />
                 <div id="actions">
                     <button onClick={() => this.painter.cancelCurrentPainting()}>Cancel</button>
-                    <button onClick={() => this.painter.selectTool('Line')}>Draw line</button>
-                    <button onClick={() => this.painter.selectTool('Rectangle')}>Draw rect</button>
-                    <button onClick={() => this.painter.selectTool('Ellipse')}>Draw ellipse</button>
-                    <button onClick={() => this.painter.selectTool('Circle')}>Draw circle</button>
-                    <button onClick={() => this.painter.selectTool('Polygon')}>Draw polygon</button>
+                    <button onClick={() => this.painter.selectTool('LINE')}>Draw line</button>
+                    <button onClick={() => this.painter.selectTool('RECTANGLE')}>Draw rect</button>
+                    <button onClick={() => this.painter.selectTool('ELLIPSE')}>Draw ellipse</button>
+                    <button onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</button>
+                    <button onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</button>
+                    <button onClick={() => this.painter.selectTool('EDIT')}>Edit</button>
                 </div>
             </div>
 

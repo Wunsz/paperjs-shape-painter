@@ -1,5 +1,6 @@
 import 'paper';
-import BaseTool from "./BaseTool";
+import BaseTool from "../BaseTool";
+import {RECTANGLE, ShapeMetadata} from "../../Shapes";
 
 class RectangleTool extends BaseTool {
     path: paper.Path | undefined;
@@ -25,8 +26,15 @@ class RectangleTool extends BaseTool {
 
         this.path.strokeColor = new this.scope.Color('black');
         this.path.selected = false;
+        this.path.data = this.getMetadata();
+
         this.path = undefined;
     };
+
+    protected getMetadata: () => ShapeMetadata = () => ({
+        type: RECTANGLE,
+        external: null,
+    });
 
     onKeyUp = (event: paper.KeyEvent) => {
         if (event.key === 'escape') {

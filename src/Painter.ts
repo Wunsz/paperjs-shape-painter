@@ -1,24 +1,25 @@
 import 'paper';
 import HitScanner from "./helper/HitScanner";
-import LineTool from "./tools/LineTool";
-import RectangleTool from "./tools/RectangleTool";
+import LineTool from "./tools/creators/LineTool";
+import RectangleTool from "./tools/creators/RectangleTool";
 import BaseTool from "./tools/BaseTool";
-import EllipseTool from "./tools/EllipseTool";
-import CircleTool from "./tools/CircleTool";
-import PolygonTool from "./tools/PolygonTool";
-
-export type Tools = 'Line' | 'Rectangle' | 'Ellipse' | 'Circle' | 'Polygon'
+import EllipseTool from "./tools/creators/EllipseTool";
+import CircleTool from "./tools/creators/CircleTool";
+import PolygonTool from "./tools/creators/PolygonTool";
+import EditTool from "./tools/EditTool";
+import {CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE, Tools} from "./Shapes";
 
 class Painter {
     scope: paper.PaperScope;
     activeTool: BaseTool | undefined;
     hitScanner: HitScanner;
     tools: Record<Tools, BaseTool> = {
-        Line: new LineTool(),
-        Rectangle: new RectangleTool(),
-        Ellipse: new EllipseTool(),
-        Circle: new CircleTool(),
-        Polygon: new PolygonTool(),
+        [LINE]: new LineTool(),
+        [RECTANGLE]: new RectangleTool(),
+        [ELLIPSE]: new EllipseTool(),
+        [CIRCLE]: new CircleTool(),
+        [POLYGON]: new PolygonTool(),
+        EDIT: new EditTool(),
     };
 
     constructor(scope: paper.PaperScope) {

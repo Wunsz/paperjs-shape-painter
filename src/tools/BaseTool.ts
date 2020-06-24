@@ -1,6 +1,6 @@
 import 'paper';
 
-class BaseTool {
+abstract class BaseTool {
     tool: paper.Tool | undefined;
     scope: paper.PaperScope;
 

@@ -1,5 +1,6 @@
 import 'paper';
-import BaseTool from "./BaseTool";
+import BaseTool from "../BaseTool";
+import {LINE, ShapeMetadata} from "../../Shapes";
 
 class LineTool extends BaseTool {
     path: paper.Path | undefined;
@@ -25,6 +26,8 @@ class LineTool extends BaseTool {
 
         this.path.segments[1].point = event.point;
         this.path.selected = false;
+        this.path.data = this.getMetadata();
+
         this.path = undefined;
     };
 
@@ -35,7 +38,12 @@ class LineTool extends BaseTool {
 
             this.deactivate();
         }
-    }
+    };
+
+    protected getMetadata: () => ShapeMetadata = () => ({
+        type: LINE,
+        external: null,
+    });
 }
 
 export default LineTool;

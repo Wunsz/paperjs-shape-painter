@@ -1,14 +1,15 @@
 import 'paper';
-import BaseTool from "./BaseTool";
+import BaseTool from "../BaseTool";
+import {CIRCLE, ShapeMetadata} from "../../Shapes";
 
-class EllipseTool extends BaseTool {
+class CircleTool extends BaseTool {
     path: paper.Path | undefined;
     initialPoint: paper.Point;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;
 
-        this.path = new this.scope.Path.Ellipse(new this.scope.Rectangle(event.point, event.point));
+        this.path = new this.scope.Path.Circle(event.point, 0);
         this.path.selected = true;
     };
 
@@ -16,7 +17,7 @@ class EllipseTool extends BaseTool {
         if (this.path === undefined) return;
         this.path.remove();
 
-        this.path = new this.scope.Path.Ellipse(new this.scope.Rectangle(this.initialPoint, event.point));
+        this.path = new this.scope.Path.Circle(this.initialPoint, event.point.getDistance(this.initialPoint));
         this.path.selected = true;
     };
 
@@ -25,6 +26,7 @@ class EllipseTool extends BaseTool {
 
         this.path.strokeColor = new this.scope.Color('black');
         this.path.selected = false;
+        this.path.data = this.getMetadata();
         this.path = undefined;
     };
 
@@ -35,7 +37,12 @@ class EllipseTool extends BaseTool {
 
             this.deactivate();
         }
-    }
+    };
+
+    protected getMetadata: () => ShapeMetadata = () => ({
+        type: CIRCLE,
+        external: null,
+    });
 }
 
-export default EllipseTool;
+export default CircleTool;
