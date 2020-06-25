@@ -1,6 +1,6 @@
 import 'paper';
 import BaseTool from "./BaseTool";
-import {CIRCLE, ELLIPSE, LINE, RECTANGLE} from "../Shapes";
+import {CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE} from "../Shapes";
 import BaseEditorTool from "./editors/BaseEditorTool";
 import LineEditorTool from "./editors/LineEditorTool";
 import RectangleEditorTool from "./editors/RectangleEditorTool";
@@ -78,6 +78,7 @@ class EditTool extends BaseTool {
 
         switch (this.item.data.type) {
             case LINE:
+            case POLYGON:
                 this.editor = new LineEditorTool();
                 break;
             case RECTANGLE:

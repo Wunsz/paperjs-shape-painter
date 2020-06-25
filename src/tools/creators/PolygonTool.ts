@@ -38,7 +38,7 @@ class PolygonTool extends LineTool {
     private shouldSnap(point: paper.Point): boolean {
         return this.path !== undefined &&
             this.path.segments.length > 2 &&
-            this.path.firstSegment.point.getDistance(point, true) < 100;
+            this.path.firstSegment.point.getDistance(point, true) < 200;
     };
 }
 
