@@ -1,10 +1,11 @@
 import 'paper';
 import BaseTool from "./BaseTool";
-import {CIRCLE, LINE, RECTANGLE} from "../Shapes";
+import {CIRCLE, ELLIPSE, LINE, RECTANGLE} from "../Shapes";
 import BaseEditorTool from "./editors/BaseEditorTool";
 import LineEditorTool from "./editors/LineEditorTool";
 import RectangleEditorTool from "./editors/RectangleEditorTool";
 import CircleEditorTool from "./editors/CircleEditorTool";
+import EllipseEditorTool from "./editors/EllipseEditorTool";
 
 class EditTool extends BaseTool {
     lastEventTimestamp: number | undefined;
@@ -84,6 +85,9 @@ class EditTool extends BaseTool {
                 break;
             case CIRCLE:
                 this.editor = new CircleEditorTool();
+                break;
+            case ELLIPSE:
+                this.editor = new EllipseEditorTool();
                 break;
         }
 

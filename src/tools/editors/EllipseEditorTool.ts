@@ -1,7 +1,7 @@
 import 'paper';
 import BaseEditorTool from "./BaseEditorTool";
 
-class CircleEditorTool extends BaseEditorTool {
+class EllipseEditorTool extends BaseEditorTool {
     segment: paper.Segment | undefined;
 
     onMouseDown = (event: paper.MouseEvent) => {
@@ -29,8 +29,14 @@ class CircleEditorTool extends BaseEditorTool {
             const previousDistanceToCenter = this.segment.point.getDistance(center);
             const currentDistanceToCenter = event.point.getDistance(center);
 
-            this.item.scale(currentDistanceToCenter / previousDistanceToCenter);
+            const path = this.item as paper.Path;
 
+            // Vertical
+            if (this.segment === path.firstSegment.previous || this.segment === path.firstSegment.next) {
+                this.item.scale(1, currentDistanceToCenter / previousDistanceToCenter);
+            } else {
+                this.item.scale(currentDistanceToCenter / previousDistanceToCenter, 1);
+            }
         } else if (this.item !== undefined) {
             this.item.position.x += event.delta.x;
             this.item.position.y += event.delta.y;
@@ -52,4 +58,4 @@ class CircleEditorTool extends BaseEditorTool {
     }
 }
 
-export default CircleEditorTool;
+export default EllipseEditorTool;
