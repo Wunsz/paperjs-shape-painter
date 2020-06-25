@@ -1,7 +1,7 @@
 import 'paper';
 import BaseEditorTool from "./BaseEditorTool";
 
-class LineEditorTool extends BaseEditorTool {
+class CircleEditorTool extends BaseEditorTool {
     segment: paper.Segment | undefined;
 
     onMouseDown = (event: paper.MouseEvent) => {
@@ -19,15 +19,22 @@ class LineEditorTool extends BaseEditorTool {
         if (hitResult !== null && hitResult.item === this.item) {
             if (hitResult.type === 'segment') {
                 this.segment = hitResult.segment;
-                this.segment.selected = true;
+            } else {
+                const path: paper.Path = this.item as paper.Path;
+                path.firstSegment.selected = true;
+                path.firstSegment.next.selected = true;
             }
         }
     };
 
     onMouseDrag = (event: paper.MouseEvent) => {
-        if(this.segment !== undefined) {
-            this.segment.point.x += event.delta.x;
-            this.segment.point.y += event.delta.y;
+        if (this.segment !== undefined) {
+            const center = this.getCenter();
+            const previousDistanceToCenter = this.segment.point.getDistance(center);
+            const currentDistanceToCenter = event.point.getDistance(center);
+
+            this.item.scale(currentDistanceToCenter / previousDistanceToCenter);
+
         } else if (this.item !== undefined) {
             this.item.position.x += event.delta.x;
             this.item.position.y += event.delta.y;
@@ -35,13 +42,18 @@ class LineEditorTool extends BaseEditorTool {
     };
 
     onMouseUp = (_: paper.MouseEvent) => {
-        if(this.item !== undefined) {
+        if (this.item !== undefined) {
             if (this.segment !== undefined) {
-                this.segment.selected = false;
                 this.segment = undefined;
             }
         }
     };
+
+    private getCenter() {
+        const path = this.item as paper.Path;
+
+        return new this.scope.Point(path.firstSegment.next.point.x, path.firstSegment.point.y);
+    }
 }
 
-export default LineEditorTool;
+export default CircleEditorTool;

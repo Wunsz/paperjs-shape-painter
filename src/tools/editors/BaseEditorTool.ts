@@ -8,7 +8,9 @@ class BaseEditorTool {
     }
 
     public disable() {
-
+        if (this.item !== undefined) {
+            this.item.selected = false;
+        }
     }
 
     public onMouseDown = (_: paper.MouseEvent): void => {

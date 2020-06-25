@@ -1,8 +1,10 @@
 import 'paper';
 import BaseTool from "./BaseTool";
-import {LINE} from "../Shapes";
+import {CIRCLE, LINE, RECTANGLE} from "../Shapes";
 import BaseEditorTool from "./editors/BaseEditorTool";
 import LineEditorTool from "./editors/LineEditorTool";
+import RectangleEditorTool from "./editors/RectangleEditorTool";
+import CircleEditorTool from "./editors/CircleEditorTool";
 
 class EditTool extends BaseTool {
     lastEventTimestamp: number | undefined;
@@ -23,10 +25,6 @@ class EditTool extends BaseTool {
     };
 
     onMouseUp = (event: paper.MouseEvent) => {
-        if (this.lastEventTimestamp !== undefined && event.timeStamp - this.lastEventTimestamp > 750) {
-            this.hitTest(event.point);
-        }
-
         if (this.editor !== undefined) {
             this.editor.onMouseUp(event);
         }
@@ -40,7 +38,7 @@ class EditTool extends BaseTool {
 
     onMouseDrag = (event: paper.MouseEvent) => {
         if (this.editor !== undefined) {
-            this.editor.onMouseMove(event);
+            this.editor.onMouseDrag(event);
         }
     };
 
@@ -80,13 +78,20 @@ class EditTool extends BaseTool {
         switch (this.item.data.type) {
             case LINE:
                 this.editor = new LineEditorTool();
+                break;
+            case RECTANGLE:
+                this.editor = new RectangleEditorTool();
+                break;
+            case CIRCLE:
+                this.editor = new CircleEditorTool();
+                break;
         }
 
         this.editor?.enable(this.item, this.scope);
     }
 
     private disableEditor() {
-        if (this.item === undefined || this.editor === undefined) return;
+        if (this.editor === undefined) return;
 
         this.editor.disable();
         this.editor = undefined;
