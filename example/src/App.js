@@ -1,7 +1,8 @@
-import React, {Component, useEffect} from 'react'
+import React, {Component} from 'react'
 import {PaperScope} from "paper";
 
 import {Painter} from 'paperjs-shape-painter';
+import Picker from "./Picker";
 
 
 export default class App extends Component {
@@ -38,6 +39,7 @@ export default class App extends Component {
                     <button onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</button>
                     <button onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</button>
                     <button onClick={() => this.painter.selectTool('EDIT')}>Edit</button>
+                    <Picker/>
                 </div>
             </div>
 
