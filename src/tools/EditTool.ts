@@ -14,7 +14,7 @@ class EditTool extends BaseTool {
 
     onMouseDown = (event: paper.MouseEvent) => {
         if (this.lastEventTimestamp !== undefined && event.timeStamp - this.lastEventTimestamp < 250) {
-            this.hitTest(event.point);
+            this.hitTest(event.point, true);
             this.lastEventTimestamp = undefined;
         } else {
             this.lastEventTimestamp = event.timeStamp;
@@ -34,6 +34,8 @@ class EditTool extends BaseTool {
     onMouseMove = (event: paper.MouseEvent) => {
         if (this.editor !== undefined) {
             this.editor.onMouseMove(event);
+        } else {
+            this.hitTest(event.point);
         }
     };
 
@@ -50,7 +52,7 @@ class EditTool extends BaseTool {
         }
     };
 
-    private hitTest(point: paper.Point) {
+    private hitTest(point: paper.Point, enableEditorOnHit = false) {
         const hitResult = this.scope.project.hitTest(point, {
             segments: true,
             stroke: true,
@@ -59,13 +61,19 @@ class EditTool extends BaseTool {
             fill: false,
             guide: false,
             ends: true,
-            tolerance: 3 / this.scope.view.zoom
+            tolerance: 8 / this.scope.view.zoom
         });
 
-        if (hitResult !== null && this.item === undefined) {
+        if (hitResult !== null && this.editor === undefined) {
+            if (this.item !== undefined) {
+                this.item.selected = false;
+            }
             this.item = hitResult.item;
             this.item.selected = true;
-            this.enableEditor();
+
+            if (enableEditorOnHit) {
+                this.enableEditor();
+            }
         } else if (this.item !== undefined) {
             this.item.selected = false;
             this.item = undefined;
