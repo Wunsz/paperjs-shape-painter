@@ -26,6 +26,8 @@ class CircleTool extends BaseTool {
         if (this.path === undefined) return;
 
         this.updatePathData(this.path, CIRCLE, {selected: false});
+        this.callback(this.path.id, this.path);
+
         this.path = undefined;
     };
 

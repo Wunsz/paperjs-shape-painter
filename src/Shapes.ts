@@ -5,9 +5,11 @@ export const CIRCLE = 'CIRCLE';
 export const POLYGON = 'POLYGON';
 
 export type Shapes = typeof LINE | typeof RECTANGLE | typeof ELLIPSE | typeof CIRCLE | typeof POLYGON;
-export type Tools = Shapes | 'EDIT'
+export type Tools = Shapes | 'EDIT' | 'REMOVE'
+
+export type ActionFinishedCallback = (id: number, item: paper.Item) => any;
 
 export type ShapeMetadata = {
     type: Shapes,
-    external: any,
+    ext: any,
 }

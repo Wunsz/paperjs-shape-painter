@@ -26,6 +26,8 @@ class EllipseTool extends BaseTool {
         if (this.path === undefined) return;
 
         this.updatePathData(this.path, ELLIPSE, {selected: false});
+        this.callback(this.path.id, this.path);
+
         this.path = undefined;
     };
 

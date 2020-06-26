@@ -26,6 +26,7 @@ class LineTool extends BaseTool {
 
         this.path.segments[1].point = event.point;
         this.updatePathData(this.path, this.type as Shapes, {selected: false});
+        this.callback(this.path.id, this.path);
 
         this.path = undefined;
     };

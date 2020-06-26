@@ -24,6 +24,7 @@ class PolygonTool extends LineTool {
 
         if (this.path.closed) {
             this.updatePathData(this.path, POLYGON, {selected: false});
+            this.callback(this.path.id, this.path);
 
             this.path = undefined;
         } else {

@@ -1,11 +1,12 @@
 import 'paper';
 import StyleAndDataEnabledTool from "./StyleAndDataEnabledTool";
-import {Tools} from "../Shapes";
+import {ActionFinishedCallback, Tools} from "../Shapes";
 
 abstract class BaseTool extends StyleAndDataEnabledTool {
     tool: paper.Tool | undefined;
     scope: paper.PaperScope;
     type: Tools;
+    callback: ActionFinishedCallback;
 
     public onMouseDown = (_: paper.MouseEvent): void => {
 
@@ -23,9 +24,10 @@ abstract class BaseTool extends StyleAndDataEnabledTool {
 
     };
 
-    public activate(scope: paper.PaperScope, customData?: any, style?: Partial<paper.Style>) {
+    public activate(scope: paper.PaperScope, callback: ActionFinishedCallback, customData?: any, style?: Partial<paper.Style>) {
         this.tool = new scope.Tool();
         this.scope = scope;
+        this.callback = callback;
 
         if (customData !== undefined) {
             this.setCustomData(customData);

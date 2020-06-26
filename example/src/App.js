@@ -21,6 +21,10 @@ export default class App extends Component {
         scope.setup(this.ref.current);
 
         this.painter = new Painter(scope);
+        this.painter.updateDefaultStyle({strokeColor: '#000', strokeWidth: 1});
+        this.painter.onAddedCallback = (id, item) => console.log(`Added element: ${id}`, item.data);
+        this.painter.onChangedCallback = (id, item) => console.log(`Changed element: ${id}`, item.data);
+        this.painter.onRemovedCallback = (id, item) => console.log(`Removed element: ${id}`, item.data);
     }
 
     render() {
@@ -43,6 +47,7 @@ export default class App extends Component {
                         <Button onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</Button>
                         <Button onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</Button>
                         <Button onClick={() => this.painter.selectTool('EDIT')}>Edit</Button>
+                        <Button onClick={() => this.painter.selectTool('REMOVE')}>Remove</Button>
                     </Paper>
                     <Picker
                         onColorChange={color => {

@@ -85,6 +85,11 @@ class EditTool extends BaseTool {
             }
         } else if (this.item !== undefined) {
             this.item.selected = false;
+
+            if (this.editor !== undefined) {
+                this.callback(this.item.id, this.item);
+            }
+
             this.item = undefined;
             this.disableEditor();
         }

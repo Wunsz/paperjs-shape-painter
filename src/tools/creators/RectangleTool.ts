@@ -26,6 +26,7 @@ class RectangleTool extends BaseTool {
         if (this.path === undefined) return;
 
         this.updatePathData(this.path, RECTANGLE, {selected: false});
+        this.callback(this.path.id, this.path);
 
         this.path = undefined;
     };
