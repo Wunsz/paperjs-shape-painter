@@ -13,8 +13,10 @@ yarn add paperjs-shape-painter
 ## Usage
 
 ```tsx
-import ShapePainter from 'paperjs-shape-painter'
+import {Painter} from 'paperjs-shape-painter'
 ```
+
+See example app for details.
 
 ## License
 
