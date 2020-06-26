@@ -1,16 +1,17 @@
 import 'paper';
 import BaseTool from "../BaseTool";
-import {CIRCLE, ShapeMetadata} from "../../Shapes";
+import {CIRCLE, Tools} from "../../Shapes";
 
 class CircleTool extends BaseTool {
     path: paper.Path | undefined;
     initialPoint: paper.Point;
+    type: Tools = CIRCLE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;
 
         this.path = new this.scope.Path.Circle(event.point, 0);
-        this.path.selected = true;
+        this.updatePathData(this.path, CIRCLE, {selected: true});
     };
 
     onMouseDrag = (event: paper.MouseEvent) => {
@@ -18,15 +19,13 @@ class CircleTool extends BaseTool {
         this.path.remove();
 
         this.path = new this.scope.Path.Circle(this.initialPoint, event.point.getDistance(this.initialPoint));
-        this.path.selected = true;
+        this.updatePathData(this.path, CIRCLE, {selected: true});
     };
 
     onMouseUp = (_: paper.MouseEvent) => {
         if (this.path === undefined) return;
 
-        this.path.strokeColor = new this.scope.Color('black');
-        this.path.selected = false;
-        this.path.data = this.getMetadata();
+        this.updatePathData(this.path, CIRCLE, {selected: false});
         this.path = undefined;
     };
 
@@ -38,11 +37,6 @@ class CircleTool extends BaseTool {
             this.deactivate();
         }
     };
-
-    protected getMetadata: () => ShapeMetadata = () => ({
-        type: CIRCLE,
-        external: null,
-    });
 }
 
 export default CircleTool;

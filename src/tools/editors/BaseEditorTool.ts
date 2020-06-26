@@ -1,4 +1,8 @@
-class BaseEditorTool {
+import StyleAndDataEnabledTool from "../StyleAndDataEnabledTool";
+import {ShapeMetadata} from "../../Shapes";
+import Path = paper.Path;
+
+class BaseEditorTool extends StyleAndDataEnabledTool {
     item: paper.Item;
     scope: paper.PaperScope;
     segment: paper.Segment | undefined;
@@ -29,6 +33,15 @@ class BaseEditorTool {
     public onKeyUp = (_: paper.KeyEvent): void => {
 
     };
+
+    public getMeta(): ShapeMetadata {
+        return this.item.data as ShapeMetadata;
+    }
+
+    public updateStyleAndMeta(customData?: any, style?: Partial<paper.Style>) {
+        super.updateStyleAndMeta(customData, style);
+        this.updatePathData(this.item as Path, this.getMeta().type);
+    }
 
     protected beginEdit(event: paper.MouseEvent, selectSegment: boolean) {
         const hitResult = this.hitTest(event.point);

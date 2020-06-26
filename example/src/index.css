@@ -12,17 +12,30 @@ body {
     background: #fff;
 }
 
-#canvasContainer {
+#appContainer {
     display: flex;
     flex: 1;
-    width: 100%;
-    height: 100%;
     justify-content: center;
     align-content: center;
     background: #f0f0f0;
+    padding: 6px;
+}
+
+#canvasContainer {
+    margin: 6px;
 }
 
 #actions {
+    display: flex;
+    flex-direction: column;
+    margin: 6px;
+}
+
+#pickerContainer {
+    margin: 6px 0;
+}
+
+#actionButtons {
     display: flex;
     flex-direction: column;
 }
@@ -30,4 +43,8 @@ body {
 #actions button {
     margin: 10px;
     height: 40px;
+}
+
+#slider {
+    padding: 6px 12px
 }

@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.10.2",
     "paper": "^0.12.8",
     "paperjs-shape-painter": "link:..",
     "prop-types": "^15.7.2",

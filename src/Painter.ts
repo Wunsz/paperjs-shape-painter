@@ -1,5 +1,4 @@
 import 'paper';
-import HitScanner from "./helper/HitScanner";
 import LineTool from "./tools/creators/LineTool";
 import RectangleTool from "./tools/creators/RectangleTool";
 import BaseTool from "./tools/BaseTool";
@@ -10,10 +9,9 @@ import EditTool from "./tools/EditTool";
 import {CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE, Tools} from "./Shapes";
 
 class Painter {
-    scope: paper.PaperScope;
-    activeTool: BaseTool | undefined;
-    hitScanner: HitScanner;
-    tools: Record<Tools, BaseTool> = {
+    private activeTool: BaseTool | undefined;
+    private readonly scope: paper.PaperScope;
+    private readonly tools: Record<Tools, BaseTool> = {
         [LINE]: new LineTool(),
         [RECTANGLE]: new RectangleTool(),
         [ELLIPSE]: new EllipseTool(),
@@ -22,21 +20,36 @@ class Painter {
         EDIT: new EditTool(),
     };
 
+    private style: Partial<paper.Style> = {};
+    private customData: any;
+
     constructor(scope: paper.PaperScope) {
         this.scope = scope;
-        this.hitScanner = new HitScanner(scope);
-
-        this.init();
     }
 
-    public init() {
-        //this.scope.settings.hitTolerance = 10;
-        //this.hitScanner.enable();
+    public getActiveTool(): BaseTool | undefined {
+        return this.activeTool;
     }
 
-    public selectTool(tool: Tools) {
+    public setDefaultStyle(style: Partial<paper.Style>) {
+        this.style = style;
+    }
+
+    public updateDefaultStyle(style: Partial<paper.Style>) {
+        this.style = {...this.style, ...style};
+    }
+
+    public setCustomData(data: any) {
+        this.customData = data;
+    }
+
+    public selectTool(tool: Tools, customData?: any, style?: Partial<paper.Style>) {
         this.activeTool = this.tools[tool];
-        this.activeTool.activate(this.scope);
+        this.activeTool.activate(
+            this.scope,
+            customData === undefined ? this.customData : customData,
+            style === undefined ? this.style : style
+        );
     }
 
     public cancelCurrentPainting() {

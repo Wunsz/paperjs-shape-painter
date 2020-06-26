@@ -1,8 +1,11 @@
 import 'paper';
+import StyleAndDataEnabledTool from "./StyleAndDataEnabledTool";
+import {Tools} from "../Shapes";
 
-abstract class BaseTool {
+abstract class BaseTool extends StyleAndDataEnabledTool {
     tool: paper.Tool | undefined;
     scope: paper.PaperScope;
+    type: Tools;
 
     public onMouseDown = (_: paper.MouseEvent): void => {
 
@@ -20,9 +23,17 @@ abstract class BaseTool {
 
     };
 
-    public activate(scope: paper.PaperScope) {
+    public activate(scope: paper.PaperScope, customData?: any, style?: Partial<paper.Style>) {
         this.tool = new scope.Tool();
         this.scope = scope;
+
+        if (customData !== undefined) {
+            this.setCustomData(customData);
+        }
+
+        if (style !== undefined) {
+            this.setStyle(style);
+        }
 
         this.tool.onMouseDown = this.onMouseDown;
         this.tool.onMouseMove = this.onMouseMove;

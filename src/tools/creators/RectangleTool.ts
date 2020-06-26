@@ -1,10 +1,11 @@
 import 'paper';
 import BaseTool from "../BaseTool";
-import {RECTANGLE, ShapeMetadata} from "../../Shapes";
+import {RECTANGLE, Tools} from "../../Shapes";
 
 class RectangleTool extends BaseTool {
     path: paper.Path | undefined;
     initialPoint: paper.Point;
+    type: Tools = RECTANGLE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;
@@ -24,17 +25,10 @@ class RectangleTool extends BaseTool {
     onMouseUp = (_: paper.MouseEvent) => {
         if (this.path === undefined) return;
 
-        this.path.strokeColor = new this.scope.Color('black');
-        this.path.selected = false;
-        this.path.data = this.getMetadata();
+        this.updatePathData(this.path, RECTANGLE, {selected: false});
 
         this.path = undefined;
     };
-
-    protected getMetadata: () => ShapeMetadata = () => ({
-        type: RECTANGLE,
-        external: null,
-    });
 
     onKeyUp = (event: paper.KeyEvent) => {
         if (event.key === 'escape') {

@@ -1,16 +1,16 @@
 import 'paper';
 import BaseTool from "../BaseTool";
-import {LINE, ShapeMetadata} from "../../Shapes";
+import {LINE, Shapes, Tools} from "../../Shapes";
 
 class LineTool extends BaseTool {
     path: paper.Path | undefined;
+    type: Tools = LINE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         if (this.path !== undefined) return;
 
         this.path = new this.scope.Path();
-        this.path.selected = true;
-        this.path.strokeColor = new this.scope.Color('black');
+        this.updatePathData(this.path, this.type as Shapes, {selected: true});
         this.path.add(event.point);
         this.path.add(event.point);
     };
@@ -25,8 +25,7 @@ class LineTool extends BaseTool {
         if (this.path === undefined) return;
 
         this.path.segments[1].point = event.point;
-        this.path.selected = false;
-        this.path.data = this.getMetadata();
+        this.updatePathData(this.path, this.type as Shapes, {selected: false});
 
         this.path = undefined;
     };
@@ -39,11 +38,6 @@ class LineTool extends BaseTool {
             this.deactivate();
         }
     };
-
-    protected getMetadata: () => ShapeMetadata = () => ({
-        type: LINE,
-        external: null,
-    });
 }
 
 export default LineTool;

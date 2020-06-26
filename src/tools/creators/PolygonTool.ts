@@ -1,8 +1,10 @@
 import 'paper';
 import LineTool from "./LineTool";
-import {POLYGON, ShapeMetadata} from "../../Shapes";
+import {POLYGON, Tools} from "../../Shapes";
 
 class PolygonTool extends LineTool {
+    type: Tools = POLYGON;
+
     onMouseDrag = (event: paper.MouseEvent) => {
         if (this.path === undefined) return;
 
@@ -21,19 +23,13 @@ class PolygonTool extends LineTool {
         if (this.path === undefined) return;
 
         if (this.path.closed) {
-            this.path.selected = false;
-            this.path.data = this.getMetadata();
+            this.updatePathData(this.path, POLYGON, {selected: false});
 
             this.path = undefined;
         } else {
             this.path.add(event.point);
         }
     };
-
-    protected getMetadata: () => ShapeMetadata = () => ({
-        type: POLYGON,
-        external: null,
-    });
 
     private shouldSnap(point: paper.Point): boolean {
         return this.path !== undefined &&
