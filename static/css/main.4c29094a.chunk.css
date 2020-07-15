@@ -1,0 +1,2 @@
+body{width:100vw;height:100vh;margin:0;padding:0;font-family:sans-serif}#root{width:100%;height:100%;background:#fff}#appContainer{display:flex;flex:1 1;justify-content:center;align-content:center;background:#f0f0f0;padding:6px}#actions,#canvasContainer{margin:6px}#actions{display:flex;flex-direction:column}#pickerContainer{margin:6px 0}#actionButtons{display:flex;flex-direction:column}#actions button{margin:10px;height:40px}#slider{padding:6px 12px}
+/*# sourceMappingURL=main.4c29094a.chunk.css.map */
