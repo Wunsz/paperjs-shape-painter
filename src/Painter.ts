@@ -35,19 +35,59 @@ class Painter {
         };
     }
 
+    /**
+     * Returns currently activated tool
+     */
     public getActiveTool(): BaseTool | undefined {
         return this.activeTool;
     }
 
-    public getItemById(id: string | number): paper.Item | undefined {
-        return this.scope.project.getItem((item: paper.Item) => item.data !== undefined && item.data.ext.id === id);
+    /**
+     * Returns item by its PaperJS given ID
+     *
+     * @param id
+     */
+    public getItemById(id: number): paper.Item | undefined {
+        return this.scope.project.getItem({id});
     }
 
+    /**
+     * Finds object in editor project which custom data is equal to passed custom data.
+     *
+     * @param customData Data to match
+     */
+    public getItemByCustomData(customData: any): paper.Item | undefined {
+        return this.scope.project.getItem((item: paper.Item) => item.data !== undefined
+            && item.data.ext !== undefined
+            && item.data.ext.customData === customData
+        )
+    }
+
+    /**
+     * Finds object in editor project that have custom data as an object and at least one object property matches.
+     *
+     * @param customData
+     */
+    public getItemByCustomDataPartialMatch(customData: object): paper.Item | undefined {
+        return this.scope.project.getItem((item: paper.Item) => item.data !== undefined
+            && item.data.ext !== undefined
+            && typeof item.data.ext === 'object'
+            && Object.getOwnPropertyNames(customData).some(key => customData[key] === item.data.ext[key])
+        );
+    }
+
+    /**
+     * Select and activates painter tool
+     * @param tool
+     */
     public selectTool(tool: Tools) {
         this.activeTool = this.tools[tool];
         this.activeTool.activate();
     }
 
+    /**
+     * Cancels current painting
+     */
     public cancelCurrentPainting() {
         if (this.activeTool !== undefined) {
             this.activeTool.deactivate();

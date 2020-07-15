@@ -1,6 +1,6 @@
 {
     "name": "paperjs-shape-painter",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "description": "Paper.js interactive shape painting library",
     "author": "Wunsz",
     "license": "MIT",
