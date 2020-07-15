@@ -1,11 +1,10 @@
 import 'paper';
-import BaseTool from "../BaseTool";
-import {ELLIPSE, Tools} from "../../Shapes";
+import {ELLIPSE, Shapes} from "../../Shapes";
+import BaseCreatorTool from "./BaseCreatorTool";
 
-class EllipseTool extends BaseTool {
-    path: paper.Path | undefined;
+class EllipseTool extends BaseCreatorTool {
     initialPoint: paper.Point;
-    type: Tools = ELLIPSE;
+    type: Shapes = ELLIPSE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;

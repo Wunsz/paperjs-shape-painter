@@ -1,9 +1,14 @@
 import 'paper';
 import BaseTool from "./BaseTool";
-import {Tools} from "../Shapes";
+import {ActionFinishedCallback, Tools} from "../Shapes";
+import SettingsManager from "../Settings";
 
 class RemoveTool extends BaseTool {
     type: Tools = "REMOVE";
+
+    constructor(scope: paper.PaperScope, settings: SettingsManager, callbackResolver: () => ActionFinishedCallback) {
+        super(scope, settings, callbackResolver);
+    }
 
     onMouseUp = (event: paper.MouseEvent) => {
         const hitResult = this.scope.project.hitTest(event.point, {
@@ -14,10 +19,10 @@ class RemoveTool extends BaseTool {
             fill: false,
             guide: false,
             ends: true,
-            tolerance: 8 / this.scope.view.zoom
+            tolerance: this.settings.settings.snappingDistance / this.scope.view.zoom
         });
 
-        if(hitResult !== null) {
+        if (hitResult !== null) {
             this.callback(hitResult.item.id, hitResult.item);
             hitResult.item.remove();
         }

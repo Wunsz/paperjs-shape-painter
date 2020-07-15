@@ -21,7 +21,7 @@ export default class App extends Component {
         scope.setup(this.ref.current);
 
         this.painter = new Painter(scope);
-        this.painter.updateDefaultStyle({strokeColor: '#000', strokeWidth: 1});
+        this.painter.settings.update({style: {strokeColor: '#000', strokeWidth: 1}});
         this.painter.onAddedCallback = (id, item) => console.log(`Added element: ${id}`, item.data);
         this.painter.onChangedCallback = (id, item) => console.log(`Changed element: ${id}`, item.data);
         this.painter.onRemovedCallback = (id, item) => console.log(`Removed element: ${id}`, item.data);
@@ -51,12 +51,7 @@ export default class App extends Component {
                     </Paper>
                     <Picker
                         onColorChange={color => {
-                            this.painter.updateDefaultStyle({strokeColor: color});
-
-                            const activeTool = this.painter.getActiveTool();
-                            if (activeTool !== undefined) {
-                                activeTool.updateStyleAndMeta(undefined, {strokeColor: color})
-                            }
+                            this.painter.settings.update({style: {strokeColor: color}}, true);
                         }}
                     />
                     <Paper id="slider">
@@ -68,12 +63,7 @@ export default class App extends Component {
                             step={1}
                             valueLabelDisplay="auto"
                             onChange={(_, value) => {
-                                this.painter.updateDefaultStyle({strokeWidth: value});
-
-                                const activeTool = this.painter.getActiveTool();
-                                if (activeTool !== undefined) {
-                                    activeTool.updateStyleAndMeta(undefined, {strokeWidth: value});
-                                }
+                                this.painter.settings.update({style: {strokeWidth: value}}, true);
                             }}/>
                     </Paper>
                 </div>

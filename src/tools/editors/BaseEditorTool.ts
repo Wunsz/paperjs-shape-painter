@@ -1,21 +1,32 @@
-import StyleAndDataEnabledTool from "../StyleAndDataEnabledTool";
+import "paper";
 import {ShapeMetadata} from "../../Shapes";
-import Path = paper.Path;
+import SettingsEnabledTool from "../SettingsEnabledTool";
+import {Settings} from "../../Settings";
 
-class BaseEditorTool extends StyleAndDataEnabledTool {
+class BaseEditorTool extends SettingsEnabledTool {
     item: paper.Item;
     scope: paper.PaperScope;
     segment: paper.Segment | undefined;
 
+    protected onSettingsChanged = (_: Settings) => {
+        if (this.item !== undefined) {
+            this.item.style = {...this.item.style, ...this.settings.settings.style};
+        }
+    }
+
     public enable(item: paper.Item, scope: paper.PaperScope) {
         this.item = item;
         this.scope = scope;
+
+        this.settings.addOnChangeListener(this.onSettingsChanged);
     }
 
     public disable() {
         if (this.item !== undefined) {
             this.item.selected = false;
         }
+
+        this.settings.removeOnChangeListener(this.onSettingsChanged);
     }
 
     public onMouseDown = (_: paper.MouseEvent): void => {
@@ -36,11 +47,6 @@ class BaseEditorTool extends StyleAndDataEnabledTool {
 
     public getMeta(): ShapeMetadata {
         return this.item.data as ShapeMetadata;
-    }
-
-    public updateStyleAndMeta(customData?: any, style?: Partial<paper.Style>) {
-        super.updateStyleAndMeta(customData, style);
-        this.updatePathData(this.item as Path, this.getMeta().type);
     }
 
     protected beginEdit(event: paper.MouseEvent, selectSegment: boolean) {
@@ -72,7 +78,7 @@ class BaseEditorTool extends StyleAndDataEnabledTool {
             fill: false,
             guide: false,
             ends: true,
-            tolerance: 8 / this.scope.view.zoom
+            tolerance: this.settings.settings.snappingDistance / this.scope.view.zoom
         });
     }
 }

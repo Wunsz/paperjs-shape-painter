@@ -1,11 +1,11 @@
 import 'paper';
-import BaseTool from "../BaseTool";
-import {RECTANGLE, Tools} from "../../Shapes";
+import {RECTANGLE, Shapes} from "../../Shapes";
+import BaseCreatorTool from "./BaseCreatorTool";
 
-class RectangleTool extends BaseTool {
+class RectangleTool extends BaseCreatorTool {
     path: paper.Path | undefined;
     initialPoint: paper.Point;
-    type: Tools = RECTANGLE;
+    type: Shapes = RECTANGLE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;

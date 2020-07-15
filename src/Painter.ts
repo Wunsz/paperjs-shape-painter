@@ -8,59 +8,44 @@ import PolygonTool from "./tools/creators/PolygonTool";
 import EditTool from "./tools/EditTool";
 import {CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE, Tools, ActionFinishedCallback} from "./Shapes";
 import RemoveTool from "./tools/RemoveTool";
+import SettingsManager from "./Settings";
 
 class Painter {
     private activeTool: BaseTool | undefined;
     private readonly scope: paper.PaperScope;
+    public readonly settings: SettingsManager = new SettingsManager();
 
     public onAddedCallback: ActionFinishedCallback = (_id, _item) => null;
     public onChangedCallback: ActionFinishedCallback = (_id, _item) => null;
     public onRemovedCallback: ActionFinishedCallback = (_id, _item) => null;
 
-    private readonly tools: Record<Tools, {tool: BaseTool, getCallback: () => ActionFinishedCallback}> = {
-        [LINE]: {tool: new LineTool(), getCallback: () => this.onAddedCallback},
-        [RECTANGLE]: {tool: new RectangleTool(), getCallback: () => this.onAddedCallback},
-        [ELLIPSE]: {tool: new EllipseTool(), getCallback: () => this.onAddedCallback},
-        [CIRCLE]: {tool: new CircleTool(), getCallback: () => this.onAddedCallback},
-        [POLYGON]: {tool: new PolygonTool(), getCallback: () => this.onAddedCallback},
-        EDIT: {tool: new EditTool(), getCallback: () => this.onChangedCallback},
-        REMOVE: {tool: new RemoveTool(), getCallback: () => this.onRemovedCallback},
-    };
-    private style: Partial<paper.Style> = {};
-    private customData: any;
+    private readonly tools: Record<Tools, BaseTool>;
 
     constructor(scope: paper.PaperScope) {
         this.scope = scope;
+
+        this.tools = {
+            [LINE]: new LineTool(this.scope, this.settings, () => this.onAddedCallback),
+            [RECTANGLE]: new RectangleTool(this.scope, this.settings, () => this.onAddedCallback),
+            [ELLIPSE]: new EllipseTool(this.scope, this.settings, () => this.onAddedCallback),
+            [CIRCLE]: new CircleTool(this.scope, this.settings, () => this.onAddedCallback),
+            [POLYGON]: new PolygonTool(this.scope, this.settings, () => this.onAddedCallback),
+            EDIT: new EditTool(this.scope, this.settings, () => this.onChangedCallback),
+            REMOVE: new RemoveTool(this.scope, this.settings, () => this.onRemovedCallback),
+        };
     }
 
     public getActiveTool(): BaseTool | undefined {
         return this.activeTool;
     }
 
-    public setDefaultStyle(style: Partial<paper.Style>) {
-        this.style = style;
+    public getItemById(id: string | number): paper.Item | undefined {
+        return this.scope.project.getItem((item: paper.Item) => item.data !== undefined && item.data.ext.id === id);
     }
 
-    public updateDefaultStyle(style: Partial<paper.Style>) {
-        this.style = {...this.style, ...style};
-    }
-
-    public setCustomData(data: any) {
-        this.customData = data;
-    }
-
-    public getItemById(id: string): paper.Item | undefined {
-        return this.scope.project.getItem((item: paper.Item) => item.data !== undefined && item.data.id === id);
-    }
-
-    public selectTool(tool: Tools, customData?: any, style?: Partial<paper.Style>) {
-        this.activeTool = this.tools[tool].tool;
-        this.activeTool.activate(
-            this.scope,
-            this.tools[tool].getCallback(),
-            customData === undefined ? this.customData : customData,
-            style === undefined ? this.style : style
-        );
+    public selectTool(tool: Tools) {
+        this.activeTool = this.tools[tool];
+        this.activeTool.activate();
     }
 
     public cancelCurrentPainting() {

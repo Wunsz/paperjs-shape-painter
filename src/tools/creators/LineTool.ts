@@ -1,10 +1,10 @@
 import 'paper';
-import BaseTool from "../BaseTool";
-import {LINE, Shapes, Tools} from "../../Shapes";
+import {LINE, Shapes} from "../../Shapes";
+import BaseCreatorTool from "./BaseCreatorTool";
 
-class LineTool extends BaseTool {
+class LineTool extends BaseCreatorTool {
     path: paper.Path | undefined;
-    type: Tools = LINE;
+    type: Shapes = LINE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         if (this.path !== undefined) return;

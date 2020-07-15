@@ -1,11 +1,10 @@
 import 'paper';
-import BaseTool from "../BaseTool";
-import {CIRCLE, Tools} from "../../Shapes";
+import {CIRCLE, Shapes} from "../../Shapes";
+import BaseCreatorTool from "./BaseCreatorTool";
 
-class CircleTool extends BaseTool {
-    path: paper.Path | undefined;
+class CircleTool extends BaseCreatorTool {
     initialPoint: paper.Point;
-    type: Tools = CIRCLE;
+    type: Shapes = CIRCLE;
 
     onMouseDown = (event: paper.MouseEvent) => {
         this.initialPoint = event.point;

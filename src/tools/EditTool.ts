@@ -1,17 +1,22 @@
 import 'paper';
 import BaseTool from "./BaseTool";
-import {CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE, Tools} from "../Shapes";
+import {ActionFinishedCallback, CIRCLE, ELLIPSE, LINE, POLYGON, RECTANGLE, Tools} from "../Shapes";
 import BaseEditorTool from "./editors/BaseEditorTool";
 import LineEditorTool from "./editors/LineEditorTool";
 import RectangleEditorTool from "./editors/RectangleEditorTool";
 import CircleEditorTool from "./editors/CircleEditorTool";
 import EllipseEditorTool from "./editors/EllipseEditorTool";
+import SettingsManager from "../Settings";
 
 class EditTool extends BaseTool {
     lastEventTimestamp: number | undefined;
     editor: BaseEditorTool | undefined;
     item: paper.Item | undefined;
     type: Tools = "EDIT";
+
+    constructor(scope: paper.PaperScope, settings: SettingsManager, callbackResolver: () => ActionFinishedCallback) {
+        super(scope, settings, callbackResolver);
+    }
 
     onMouseDown = (event: paper.MouseEvent) => {
         if (this.lastEventTimestamp !== undefined && event.timeStamp - this.lastEventTimestamp < 250) {
@@ -53,14 +58,6 @@ class EditTool extends BaseTool {
         }
     };
 
-    public updateStyleAndMeta(customData?: any, style?: Partial<paper.Style>) {
-        super.updateStyleAndMeta(customData, style);
-
-        if (this.editor !== undefined) {
-            this.editor.updateStyleAndMeta(customData, style);
-        }
-    }
-
     private hitTest(point: paper.Point, enableEditorOnHit = false) {
         const hitResult = this.scope.project.hitTest(point, {
             segments: true,
@@ -70,7 +67,7 @@ class EditTool extends BaseTool {
             fill: false,
             guide: false,
             ends: true,
-            tolerance: 8 / this.scope.view.zoom
+            tolerance: this.settings.settings.snappingDistance / this.scope.view.zoom
         });
 
         if (hitResult !== null && this.editor === undefined) {
@@ -101,22 +98,20 @@ class EditTool extends BaseTool {
         switch (this.item.data.type) {
             case LINE:
             case POLYGON:
-                this.editor = new LineEditorTool();
+                this.editor = new LineEditorTool(this.settings);
                 break;
             case RECTANGLE:
-                this.editor = new RectangleEditorTool();
+                this.editor = new RectangleEditorTool(this.settings);
                 break;
             case CIRCLE:
-                this.editor = new CircleEditorTool();
+                this.editor = new CircleEditorTool(this.settings);
                 break;
             case ELLIPSE:
-                this.editor = new EllipseEditorTool();
+                this.editor = new EllipseEditorTool(this.settings);
                 break;
         }
 
         this.editor?.enable(this.item, this.scope);
-        this.editor?.setStyle(this.style);
-        this.editor?.setCustomData(this.customData);
     }
 
     private disableEditor() {

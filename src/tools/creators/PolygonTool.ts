@@ -1,9 +1,9 @@
 import 'paper';
 import LineTool from "./LineTool";
-import {POLYGON, Tools} from "../../Shapes";
+import {POLYGON, Shapes} from "../../Shapes";
 
 class PolygonTool extends LineTool {
-    type: Tools = POLYGON;
+    type: Shapes = POLYGON;
 
     onMouseDrag = (event: paper.MouseEvent) => {
         if (this.path === undefined) return;

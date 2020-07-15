@@ -1,12 +1,14 @@
 import 'paper';
-import StyleAndDataEnabledTool from "./StyleAndDataEnabledTool";
-import {ActionFinishedCallback, Tools} from "../Shapes";
+import {ActionFinishedCallback, Shapes, Tools} from "../Shapes";
+import SettingsManager from "../Settings";
+import SettingsEnabledTool from "./SettingsEnabledTool";
 
-abstract class BaseTool extends StyleAndDataEnabledTool {
-    tool: paper.Tool | undefined;
-    scope: paper.PaperScope;
-    type: Tools;
-    callback: ActionFinishedCallback;
+abstract class BaseTool extends SettingsEnabledTool{
+    protected readonly scope: paper.PaperScope;
+    protected readonly callback: ActionFinishedCallback;
+
+    protected tool: paper.Tool | undefined;
+    public readonly type: Tools;
 
     public onMouseDown = (_: paper.MouseEvent): void => {
 
@@ -24,18 +26,23 @@ abstract class BaseTool extends StyleAndDataEnabledTool {
 
     };
 
-    public activate(scope: paper.PaperScope, callback: ActionFinishedCallback, customData?: any, style?: Partial<paper.Style>) {
-        this.tool = new scope.Tool();
+    constructor(scope: paper.PaperScope, settings: SettingsManager, callbackResolver: () => ActionFinishedCallback) {
+        super(settings);
+
         this.scope = scope;
-        this.callback = callback;
+        this.callback = ((id, item) => callbackResolver()(id, item))
+    }
 
-        if (customData !== undefined) {
-            this.setCustomData(customData);
-        }
+    protected updatePathData(path: paper.Path, type: Shapes, props: Partial<paper.Path> = {}) {
+        path.style = {...path.style, ...this.settings.settings.style};
+        path.set({
+            data: {type, ext: this.settings.settings.customData},
+            ...props,
+        })
+    }
 
-        if (style !== undefined) {
-            this.setStyle(style);
-        }
+    public activate() {
+        this.tool = new this.scope.Tool();
 
         this.tool.onMouseDown = this.onMouseDown;
         this.tool.onMouseMove = this.onMouseMove;
@@ -44,11 +51,15 @@ abstract class BaseTool extends StyleAndDataEnabledTool {
         this.tool.onKeyUp = this.onKeyUp;
 
         this.tool.activate();
+
+        this.settings.addOnChangeListener(this.onSettingsChanged);
     }
 
     public deactivate() {
         this.tool?.remove();
         this.tool = undefined;
+
+        this.settings.removeOnChangeListener(this.onSettingsChanged);
     }
 }
 
