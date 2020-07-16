@@ -49,7 +49,7 @@ class SettingsManager {
 
 export const defaultSettings: Settings = {
     style: {},
-    snappingDistance: 8,
+    snappingDistance: 10,
     customData: undefined
 }
 

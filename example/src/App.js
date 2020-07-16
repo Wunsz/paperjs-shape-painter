@@ -54,7 +54,7 @@ export default class App extends Component {
                             this.painter.settings.update({style: {strokeColor: color}}, true);
                         }}
                     />
-                    <Paper id="slider">
+                    <Paper className="slider">
                         <Typography variant="subtitle1">Slide width</Typography>
                         <Slider
                             defaultValue={1}
@@ -64,6 +64,18 @@ export default class App extends Component {
                             valueLabelDisplay="auto"
                             onChange={(_, value) => {
                                 this.painter.settings.update({style: {strokeWidth: value}}, true);
+                            }}/>
+                    </Paper>
+                    <Paper className="slider">
+                        <Typography variant="subtitle1">Snapping distance</Typography>
+                        <Slider
+                            defaultValue={10}
+                            min={1}
+                            max={1000}
+                            step={1}
+                            valueLabelDisplay="auto"
+                            onChange={(_, value) => {
+                                this.painter.settings.update({snappingDistance: value});
                             }}/>
                     </Paper>
                 </div>
