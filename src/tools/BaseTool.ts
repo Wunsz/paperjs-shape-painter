@@ -61,6 +61,19 @@ abstract class BaseTool extends SettingsEnabledTool{
 
         this.settings.removeOnChangeListener(this.onSettingsChanged);
     }
+
+    protected hitTest(point: paper.Point): paper.HitResult | null {
+        return this.scope.project.hitTest(point, {
+            segments: true,
+            stroke: true,
+            curves: true,
+            handles: false,
+            fill: false,
+            guide: false,
+            ends: true,
+            tolerance: this.settings.settings.snappingDistance / this.scope.view.zoom
+        });
+    };
 }
 
 export default BaseTool;

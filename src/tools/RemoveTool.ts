@@ -5,26 +5,31 @@ import SettingsManager from "../Settings";
 
 class RemoveTool extends BaseTool {
     type: Tools = "REMOVE";
+    item: paper.Item | undefined;
 
     constructor(scope: paper.PaperScope, settings: SettingsManager, callbackResolver: () => ActionFinishedCallback) {
         super(scope, settings, callbackResolver);
     }
 
-    onMouseUp = (event: paper.MouseEvent) => {
-        const hitResult = this.scope.project.hitTest(event.point, {
-            segments: true,
-            stroke: true,
-            curves: true,
-            handles: false,
-            fill: false,
-            guide: false,
-            ends: true,
-            tolerance: this.settings.settings.snappingDistance / this.scope.view.zoom
-        });
+    onMouseMove = (event: paper.MouseEvent) => {
+        const result = this.hitTest(event.point);
 
-        if (hitResult !== null) {
-            this.callback(hitResult.item.id, hitResult.item);
-            hitResult.item.remove();
+        if (this.item !== undefined && (result === null || result.item !== this.item)) {
+            this.item.selected = false;
+            this.item = undefined;
+        }
+
+        if(result !== null) {
+            this.item = result.item;
+            this.item.selected = true;
+        }
+    };
+
+
+    onMouseUp = (_: paper.MouseEvent) => {
+        if (this.item !== undefined) {
+            this.callback(this.item.id, this.item);
+            this.item.remove();
         }
     };
 }
