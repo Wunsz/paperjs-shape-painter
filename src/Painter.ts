@@ -76,6 +76,11 @@ class Painter {
         );
     }
 
+    public editItem = (item: paper.Item) => {
+        this.selectTool("EDIT");
+        (this.activeTool as EditTool).setItem(item);
+    };
+
     /**
      * Select and activates painter tool
      * @param tool

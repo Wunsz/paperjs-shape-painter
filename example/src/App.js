@@ -9,6 +9,7 @@ import {Button, Paper, Slider, Typography} from '@material-ui/core';
 export default class App extends Component {
     ref;
     painter;
+    scope;
 
     constructor(props) {
         super(props);
@@ -20,12 +21,29 @@ export default class App extends Component {
         const scope = new PaperScope();
         scope.setup(this.ref.current);
 
+        this.scope = scope;
+
         this.painter = new Painter(scope);
         this.painter.settings.update({style: {strokeColor: '#000', strokeWidth: 1}});
         this.painter.onAddedCallback = (id, item) => console.log(`Added element: ${id}`, item.data);
         this.painter.onChangedCallback = (id, item) => console.log(`Changed element: ${id}`, item.data);
         this.painter.onRemovedCallback = (id, item) => console.log(`Removed element: ${id}`, item.data);
     }
+
+    editRandom = () => {
+        const {width, height} = this.scope.view.size;
+
+        const items = this.scope.project.getItems({
+            inside: new this.scope.Rectangle(0, 0, width, height),
+            match: item => item.data !== undefined && item.data.type !== undefined
+        });
+
+        if (items.length > 0) {
+            this.painter.editItem(items[0]);
+        } else {
+            console.warn("No items found!")
+        }
+    };
 
     render() {
         return (
@@ -46,6 +64,7 @@ export default class App extends Component {
                         <Button onClick={() => this.painter.selectTool('ELLIPSE')}>Draw ellipse</Button>
                         <Button onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</Button>
                         <Button onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</Button>
+                        <Button onClick={this.editRandom}>Edit random</Button>
                         <Button onClick={() => this.painter.selectTool('EDIT')}>Edit</Button>
                         <Button onClick={() => this.painter.selectTool('REMOVE')}>Remove</Button>
                     </Paper>

@@ -58,6 +58,23 @@ class EditTool extends BaseTool {
         }
     };
 
+    setItem = (item: paper.Item) => {
+        if (this.item !== undefined) {
+            this.item.selected = false;
+
+            if (this.editor !== undefined) {
+                this.callback(this.item.id, this.item);
+            }
+
+            this.item = undefined;
+            this.disableEditor();
+        }
+
+        this.item = item;
+        this.item.selected = true;
+        this.enableEditor();
+    };
+
     private checkAndActOnItem(point: paper.Point, enableEditorOnHit = false) {
         const hitResult = this.hitTest(point);
 
@@ -84,6 +101,8 @@ class EditTool extends BaseTool {
     }
 
     private enableEditor() {
+        // @ts-ignore
+        console.log(this.item, this.item.data.type);
         if (this.item === undefined || this.item.data.type === undefined) return;
 
         switch (this.item.data.type) {

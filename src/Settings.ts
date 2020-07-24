@@ -25,26 +25,26 @@ class SettingsManager {
             ...this.settings,
             ...settings,
             style: mergeStyle ? {...this.settings.style, ...style} : style,
-        }
+        };
 
         this.listeners.forEach(listener => listener(this.settings));
-    }
+    };
 
     /**
      * Reset settings to default values
      */
     reset = () => {
         this.settings = {...defaultSettings};
-    }
+    };
 
     addOnChangeListener = (listener: SettingsChangedListener): SettingsChangedListener => {
         this.listeners.add(listener)
         return listener;
-    }
+    };
 
     removeOnChangeListener = (listener: SettingsChangedListener) => {
         this.listeners.delete(listener);
-    }
+    };
 }
 
 export const defaultSettings: Settings = {
