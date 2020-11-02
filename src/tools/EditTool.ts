@@ -66,12 +66,10 @@ class EditTool extends BaseTool {
                 this.callback(this.item.id, this.item);
             }
 
-            this.item = undefined;
             this.disableEditor();
         }
 
         this.item = item;
-        this.item.selected = true;
         this.enableEditor();
     };
 
@@ -95,14 +93,16 @@ class EditTool extends BaseTool {
                 this.callback(this.item.id, this.item);
             }
 
-            this.item = undefined;
             this.disableEditor();
         }
     }
 
+    deactivate() {
+        this.disableEditor();
+        super.deactivate();
+    }
+
     private enableEditor() {
-        // @ts-ignore
-        console.log(this.item, this.item.data.type);
         if (this.item === undefined || this.item.data.type === undefined) return;
 
         switch (this.item.data.type) {
@@ -121,6 +121,7 @@ class EditTool extends BaseTool {
                 break;
         }
 
+        this.item.selected = true;
         this.editor?.enable(this.item, this.scope);
     }
 
@@ -129,6 +130,7 @@ class EditTool extends BaseTool {
 
         this.editor.disable();
         this.editor = undefined;
+        this.item = undefined;
     }
 }
 
