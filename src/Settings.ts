@@ -6,6 +6,7 @@ export interface Settings {
     style: Partial<paper.Style>;
     snappingDistance: number;
     customData: any;
+    selectionColorMatchingItem: boolean;
 }
 
 class SettingsManager {
@@ -50,6 +51,7 @@ class SettingsManager {
 export const defaultSettings: Settings = {
     style: {},
     snappingDistance: 10,
+    selectionColorMatchingItem: false,
     customData: undefined
 }
 

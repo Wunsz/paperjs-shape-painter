@@ -39,6 +39,7 @@ abstract class BaseTool extends SettingsEnabledTool{
             data: {type, ext: this.settings.settings.customData},
             ...props,
         })
+        path.selectedColor = this.getSelectedColor(path);
     }
 
     public activate() {
@@ -60,6 +61,16 @@ abstract class BaseTool extends SettingsEnabledTool{
         this.tool = undefined;
 
         this.settings.removeOnChangeListener(this.onSettingsChanged);
+    }
+
+    protected getSelectedColor(item: paper.Item) {
+        if (item.strokeColor !== undefined && item.strokeColor !== null && this.settings.settings.selectionColorMatchingItem) {
+            const color = item.strokeColor.clone();
+            color.brightness -= 0.3;
+            return color;
+        } else {
+            return item.selectedColor;
+        }
     }
 
     protected hitTest(point: paper.Point): paper.HitResult | null {

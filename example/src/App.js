@@ -4,6 +4,8 @@ import {PaperScope} from "paper";
 import {Painter} from 'paperjs-shape-painter';
 import Picker from "./Picker";
 import {Button, Paper, Slider, Typography} from '@material-ui/core';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 
 export default class App extends Component {
@@ -58,15 +60,15 @@ export default class App extends Component {
                 </Paper>
                 <div id="actions">
                     <Paper id="actionButtons">
-                        <Button onClick={() => this.painter.cancelCurrentPainting()}>Cancel</Button>
-                        <Button onClick={() => this.painter.selectTool('LINE')}>Draw line</Button>
-                        <Button onClick={() => this.painter.selectTool('RECTANGLE')}>Draw rect</Button>
-                        <Button onClick={() => this.painter.selectTool('ELLIPSE')}>Draw ellipse</Button>
-                        <Button onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</Button>
-                        <Button onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</Button>
-                        <Button onClick={this.editRandom}>Edit random</Button>
-                        <Button onClick={() => this.painter.selectTool('EDIT')}>Edit</Button>
-                        <Button onClick={() => this.painter.selectTool('REMOVE')}>Remove</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.cancelCurrentPainting()}>Cancel</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('LINE')}>Draw line</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('RECTANGLE')}>Draw rect</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('ELLIPSE')}>Draw ellipse</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('CIRCLE')}>Draw circle</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('POLYGON')}>Draw polygon</Button>
+                        <Button style={{margin: 0}} onClick={this.editRandom}>Edit random</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('EDIT')}>Edit</Button>
+                        <Button style={{margin: 0}} onClick={() => this.painter.selectTool('REMOVE')}>Remove</Button>
                     </Paper>
                     <Picker
                         onColorChange={color => {
@@ -74,6 +76,18 @@ export default class App extends Component {
                         }}
                     />
                     <Paper className="slider">
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.painter?.settings.selectionColorMatchingItem}
+                                    onChange={(event) => {
+                                        this.painter.settings.update({selectionColorMatchingItem: !this.painter.settings.selectionColorMatchingItem})
+                                    }}
+                                    name="selectionColorMatching"
+                                />
+                            }
+                            label="Match selection color"
+                        />
                         <Typography variant="subtitle1">Slide width</Typography>
                         <Slider
                             defaultValue={1}
@@ -84,8 +98,6 @@ export default class App extends Component {
                             onChange={(_, value) => {
                                 this.painter.settings.update({style: {strokeWidth: value}}, true);
                             }}/>
-                    </Paper>
-                    <Paper className="slider">
                         <Typography variant="subtitle1">Snapping distance</Typography>
                         <Slider
                             defaultValue={10}

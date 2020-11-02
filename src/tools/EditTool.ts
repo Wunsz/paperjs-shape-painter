@@ -81,6 +81,7 @@ class EditTool extends BaseTool {
                 this.item.selected = false;
             }
             this.item = hitResult.item;
+            this.item.selectedColor = this.getSelectedColor(this.item);
             this.item.selected = true;
 
             if (enableEditorOnHit) {
