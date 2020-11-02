@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1d603b367811b413911f2dd76659eeb7",
+    "revision": "de5245399f7cd2e3a6d9dfc52e4c93f8",
     "url": "/paperjs-shape-painter/index.html"
   },
   {
-    "revision": "15b5fe46b23561500e24",
-    "url": "/paperjs-shape-painter/static/css/main.4c29094a.chunk.css"
+    "revision": "aa2ac98d6f6996a16d98",
+    "url": "/paperjs-shape-painter/static/css/main.35b0d812.chunk.css"
   },
   {
     "revision": "70bbaea3dec2ac1f292f",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/paperjs-shape-painter/static/js/2.3eafda62.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "15b5fe46b23561500e24",
-    "url": "/paperjs-shape-painter/static/js/main.9d594ee7.chunk.js"
+    "revision": "aa2ac98d6f6996a16d98",
+    "url": "/paperjs-shape-painter/static/js/main.5d74abcc.chunk.js"
   },
   {
     "revision": "043fb30aaab514460323",

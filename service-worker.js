@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/paperjs-shape-painter/precache-manifest.d0d9a8d7b0f5f5c1d6a703fbc95cfb20.js"
+  "/paperjs-shape-painter/precache-manifest.32af4bbbf976ed31802565eda74f399e.js"
 );
 
 self.addEventListener('message', (event) => {
